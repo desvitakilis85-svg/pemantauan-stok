@@ -2,7 +2,6 @@
 <html lang="id"><head><meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>PEMANTAUAN STOK BARANG</title>
-<link rel="icon" type="image/png" href="favicon.png">
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,600;9..144,800&family=IBM+Plex+Sans:wght@400;600&family=Public+Sans:wght@400;600&display=swap">
 <style>
 :root{--bg:#FFF5F5;--surf:#fff;--ink:#2B0F13;--mut:#7A4A50;--line:#F3CFCF;--acc:#C8102E;--acc2:#E4343E;--pb:#fff;--pl:#F3B7B7;--pm:#8A3A42;--pa:#C8102E;--po:#fff;--g1:#fff;--g2:#FFF0F0;--g3:#FFD3D3;--onacc:#fff;--bad:#C2362B;--warn:#A86A00;--ok:#1F7A4D;color-scheme:light;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
@@ -39,8 +38,8 @@ details{margin:12px 0}summary{cursor:pointer;font-weight:600}
 svg text{fill:var(--mut);font-size:10px}
 ol{padding-left:20px;max-width:64ch}[hidden]{display:none!important}
 </style></head><body><main>
-<header class="hero"><span class="chip">SAW</span><span class="chip">C4.5</span><span class="chip">Sistem Pendukung Keputusan</span><h1>PEMANTAUAN STOK BARANG</h1>
-<p>Aplikasi simulasi pengambilan keputusan pengadaan barang minimarket dengan SAW dan C4.5.</p></header>
+<header class="hero"><span class="chip">SAW</span><span class="chip">C4.5</span><span class="chip">Sistem Pendukung Keputusan</span><span class="chip">Studi kasus: Alfamart</span><h1>PEMANTAUAN STOK BARANG</h1>
+<p>Aplikasi simulasi pengambilan keputusan pengadaan barang minimarket dengan SAW dan C4.5. Studi kasus mitra: Alfamart. Data yang ditampilkan adalah data dummy yang disusun mendekati kondisi nyata.</p></header>
 
 <nav role="tablist" id="nav"></nav>
 
@@ -109,9 +108,9 @@ $('#form').innerHTML=Object.keys(A).map(a=>`<label>${a}<select id="f${a.replace(
 $('#go').onclick=()=>{let n=T;const path=[];while(!n.leaf){const v=$('#f'+n.a.replace(' ','')).value;path.push(`${n.a} ${v}`);n=n.ch[v]}
  $('#out').innerHTML=`<div class="res"><b>Prediksi: <span class="${cl(n.leaf)}">${n.leaf}</span></b><p class="mut">Aturan: ${path.join(', ')||'semua data satu kelas'}.</p></div>`};
 function fillHp(){const v=+$('#hp').value||0;$('#hp').innerHTML=P.map((p,i)=>`<option value="${i}">${p.n}</option>`).join('');$('#hp').value=Math.min(v,P.length-1)}
-const M={lokasi:'',tanggal:'',pengamat:'',catatan:''},KEY='pemantauan-stok-v1';
+const M={lokasi:'Alfamart (cabang contoh)',tanggal:'2026-11-23',pengamat:'Kelompok 4 (5 TI 6)',catatan:'Data dummy yang disusun mendekati kondisi nyata di Alfamart'},KEY='pemantauan-stok-v1';
 function save(){try{localStorage.setItem(KEY,JSON.stringify({P,M}))}catch(e){}}
-try{const d=JSON.parse(localStorage.getItem(KEY)||'null');if(d&&Array.isArray(d.P)&&d.P.length){P.length=0;d.P.forEach(x=>P.push(x));Object.assign(M,d.M||{})}}catch(e){}
+try{const d=JSON.parse(localStorage.getItem(KEY)||'null');if(d&&Array.isArray(d.P)&&d.P.length){P.length=0;d.P.forEach(x=>P.push(x));Object.entries(d.M||{}).forEach(([k,v])=>{if(v)M[k]=v})}}catch(e){}
 function pred(n,f){while(!n.leaf)n=n.ch[f[n.a]];return n.leaf}
 function evalM(F){let tp=0,fp=0,fn=0,tn=0,cv=0;const rows=[];F.forEach((f,i)=>{const a=f.K,p=pred(T,f);rows.push([P[i].n,a,p]);if(a==='Rawan kosong'){p===a?tp++:fn++}else{p===a?tn++:fp++}const m=build(F.filter((_,j)=>j!==i),Object.keys(A),'Aman');if(pred(m,f)===a)cv++});return{tp,fp,fn,tn,cv,rows}}
 function drawEval(F){const n=F.length,e=evalM(F);$('#ev').innerHTML=`<p>Akurasi data latih: <b>${((e.tp+e.tn)/n*100).toFixed(1)}%</b>. Akurasi validasi leave-one-out: <b>${(e.cv/n*100).toFixed(1)}%</b>.</p><div class="wrap"><table><tr><th>Aktual / Prediksi</th><th>Rawan kosong</th><th>Aman</th></tr><tr><td>Rawan kosong</td><td>${e.tp}</td><td>${e.fn}</td></tr><tr><td>Aman</td><td>${e.fp}</td><td>${e.tn}</td></tr></table></div><details><summary>Aktual dan prediksi per barang</summary><div class="wrap"><table><tr><th>Barang</th><th>Aktual</th><th>Prediksi</th><th>Hasil</th></tr>${e.rows.map(r=>`<tr><td>${r[0]}</td><td>${r[1]}</td><td>${r[2]}</td><td>${r[1]===r[2]?'Benar':'Salah'}</td></tr>`).join('')}</table></div></details>`}
