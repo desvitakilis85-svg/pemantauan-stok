@@ -1,0 +1,131 @@
+<!doctype html>
+<html lang="id"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>PEMANTAUAN STOK BARANG</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,600;9..144,800&family=IBM+Plex+Sans:wght@400;600&family=Public+Sans:wght@400;600&display=swap">
+<style>
+:root{--bg:#F6F1E7;--surf:#FFFDF8;--ink:#26211B;--mut:#6B6254;--line:#DDD3C0;--acc:#0F6E63;--acc2:#B4532A;--pb:#fff;--pl:#CCDAD3;--pm:#52665F;--pa:#0F6E63;--po:#fff;--onacc:#fff;--bad:#C2362B;--warn:#A86A00;--ok:#1F7A4D;color-scheme:light;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#1A1714;--surf:#23201B;--ink:#EDE6D8;--mut:#A89E8C;--line:#3A352C;--acc:#4DC2AF;--acc2:#E08A5E;--pb:#142622;--pl:#27423B;--pm:#9BB5AD;--pa:#4DC2AF;--po:#0B1424;--onacc:#0B1424;--bad:#FF8C80;--warn:#F0B35A;--ok:#6FD3A0;color-scheme:dark}}
+:root[data-theme="dark"]{--bg:#1A1714;--surf:#23201B;--ink:#EDE6D8;--mut:#A89E8C;--line:#3A352C;--acc:#4DC2AF;--acc2:#E08A5E;--pb:#142622;--pl:#27423B;--pm:#9BB5AD;--pa:#4DC2AF;--po:#0B1424;--onacc:#0B1424;--bad:#FF8C80;--warn:#F0B35A;--ok:#6FD3A0;color-scheme:dark}
+html{scroll-padding-top:env(safe-area-inset-top,0px)}
+body{margin:0;background:var(--bg);color:var(--ink);font:16px/1.6 "IBM Plex Sans",system-ui,sans-serif}
+main{max-width:960px;margin:0 auto;padding:28px 18px 56px}
+h1,h2,h3{font-family:Fraunces,Georgia,serif;line-height:1.12;margin:0}
+h1{font-size:clamp(2.1rem,9vw,3.6rem);font-weight:800;letter-spacing:-.03em}
+h2{font-size:1.7rem;margin:26px 0 8px;font-weight:600}h3{font-size:1.1rem;margin:20px 0 6px;font-style:italic;font-weight:600}
+p{margin:6px 0;max-width:64ch}.mut{color:var(--mut)}
+.note{border:0;border-left:3px dotted var(--acc2);padding:2px 0 2px 14px;margin:16px 0;font-size:.88rem;color:var(--mut)}
+nav{display:flex;gap:8px;overflow-x:auto;margin:12px 0 4px;padding-bottom:4px}
+nav button{font:600 .95rem "Public Sans",sans-serif;background:var(--pb);color:var(--pm);border:1px solid var(--pl);border-radius:999px;padding:8px 16px;cursor:pointer;white-space:nowrap}
+nav button[aria-selected=true]{background:var(--pa);color:var(--po);border-color:var(--pa)}
+button:focus-visible,input:focus-visible,select:focus-visible,summary:focus-visible{outline:3px solid var(--acc2);outline-offset:2px}
+.hero{border-top:6px double var(--ink);border-bottom:1px solid var(--ink);padding:18px 0 16px;margin-bottom:6px}.hero p{color:var(--mut);margin-top:10px;font-style:italic;font-family:Fraunces,Georgia,serif}.wrap{overflow-x:auto}
+table{border-collapse:collapse;width:100%;font-size:.9rem;border-top:2px solid var(--ink);border-bottom:2px solid var(--ink)}
+th,td{padding:8px 10px;border-bottom:1px dotted var(--line);text-align:left;white-space:nowrap}th{font-family:Fraunces,Georgia,serif;font-style:italic;font-weight:600;color:var(--mut);border-bottom:1px solid var(--ink)}tr:nth-child(even) td{background:color-mix(in srgb,var(--line) 25%,transparent)}
+input,select{font:inherit;color:var(--ink);background:transparent;border:0;border-bottom:2px solid var(--ink);border-radius:0;padding:5px 4px}
+td input{width:4.8rem}
+.stats{display:grid;grid-template-columns:repeat(auto-fit,minmax(120px,1fr));gap:0;margin:16px 0;border-top:1px solid var(--ink);border-bottom:1px solid var(--ink)}
+.stat{padding:12px 16px;border-left:1px solid var(--line)}.stat:first-child{border-left:0}
+.stat b{display:block;font:600 2.6rem Fraunces,Georgia,serif;line-height:1.1}
+.st{font-weight:600}.Kritis{color:var(--bad)}.Perlu{color:var(--warn)}.Aman{color:var(--ok)}.Rawan{color:var(--bad)}
+.bar{display:inline-block;vertical-align:middle;width:90px;height:10px;background:var(--line);border-radius:3px;overflow:hidden;margin-right:6px}.bar i{display:block;height:100%;background:var(--acc)}
+.form{display:grid;grid-template-columns:repeat(auto-fit,minmax(140px,1fr));gap:12px;margin:12px 0}
+.form label{display:grid;gap:4px;font-weight:600;font-size:.9rem}
+.btn{font:600 1rem "IBM Plex Sans",sans-serif;background:var(--ink);color:var(--bg);border:0;border-radius:0;padding:10px 20px;cursor:pointer}
+.res{background:var(--surf);border:1px solid var(--ink);border-radius:0;padding:12px 16px;margin-top:12px}
+.tree ul{list-style:none;margin:2px 0 2px 6px;padding-left:14px;border-left:2px solid var(--line)}.tree li{margin:4px 0}
+details{margin:12px 0}summary{cursor:pointer;font-weight:600}
+svg text{fill:var(--mut);font-size:10px}
+ol{padding-left:20px;max-width:64ch}[hidden]{display:none!important}
+</style></head><body><main>
+<header class="hero"><h1>PEMANTAUAN STOK BARANG</h1>
+<p>Aplikasi simulasi pengambilan keputusan pengadaan barang minimarket dengan SAW dan C4.5.</p></header>
+
+<nav role="tablist" id="nav"></nav>
+
+<section id="t-dash"><h2>Ringkasan persediaan</h2><p class="mut" id="meta"></p><div class="stats" id="stats"></div>
+<h3>Barang yang perlu segera dipesan</h3><p class="mut">Diurutkan berdasarkan prioritas SAW.</p><div class="wrap"><table id="watch"></table></div></section>
+
+<section id="t-saw" hidden><h2>Ranking prioritas SAW</h2>
+<p class="mut">Bobot kriteria dihitung otomatis menjadi 100%. Hari cover dihitung dari stok dibagi penjualan per hari, dan makin kecil makin mendesak. Kriteria risiko kosong berasal dari prediksi C4.5 (Rawan = 1, Aman = 0), jadi SAW dan C4.5 bekerja bersama.</p>
+<div class="wrap"><table id="wt"></table></div>
+<h3>Ranking prioritas restock</h3><p class="mut">Saran pesan = kebutuhan 7 hari ditambah stok minimum, dikurangi stok saat ini.</p><div class="wrap"><table id="rk"></table></div>
+<details><summary>Matriks normalisasi</summary><div class="wrap"><table id="nm"></table></div></details></section>
+
+<section id="t-c45" hidden><h2>Pohon keputusan C4.5</h2>
+<p class="mut">Pohon keputusan memprediksi risiko barang kosong (Rawan kosong atau Aman). Kelasnya berasal dari pengamatan: barang yang pernah habis dalam 30 hari terakhir. Pohon dibangun memakai Gain Ratio dari level stok, penjualan, dan lead time.</p>
+<div class="tree" id="tree"></div><h3>Evaluasi model</h3><div id="ev"></div>
+<details><summary>Gain Ratio pada akar pohon</summary><div class="wrap"><table id="gt"></table></div></details>
+<h3>Coba prediksi</h3><div class="form" id="form"></div><button class="btn" id="go">Prediksi status</button><div id="out"></div></section>
+
+<section id="t-data" hidden><h2>Data barang</h2><h3>Lembar pemantauan</h3><p class="mut">Isi hasil pengamatan di mitra. Data tersimpan di browser ini.</p><div class="form"><label>Lokasi / cabang<input id="mL"></label><label>Tanggal pengamatan<input type="date" id="mT"></label><label>Pengamat<input id="mP"></label><label>Catatan<input id="mC"></label></div><h3>Data barang hasil pengamatan</h3><p class="mut">Ubah angka langsung di tabel. Kolom Kosong 30 hr adalah berapa kali barang habis dalam 30 hari terakhir, dan menjadi dasar kelas C4.5.</p><div class="wrap"><table id="dt"></table></div><h3>Tambah barang</h3><div class="form"><label>Nama barang<input id="fN"></label><label>Kategori<select id="fK"><option>Sembako</option><option>Makanan</option><option>Minuman</option><option>Bumbu</option><option>Kebersihan</option><option>Bayi</option><option>Snack</option><option>Roti</option><option>Beku</option><option>Kesehatan</option></select></label><label>Stok<input type="number" min="0" id="fS"></label><label>Stok minimum<input type="number" min="0" id="fM"></label><label>Jual/hari<input type="number" min="0" id="fJ"></label><label>Lead time<input type="number" min="0" id="fL"></label><label>Margin %<input type="number" min="0" id="fG"></label><label>Kosong 30 hr<input type="number" min="0" id="fX"></label></div><button class="btn" id="addb">Tambah barang</button></section>
+
+<section id="t-hist" hidden><h2>Tren penjualan 30 hari</h2><p class="mut">Penjualan harian simulasi untuk satu produk.</p><select id="hp" aria-label="Pilih produk"></select><div id="hs" class="stats"></div><svg id="hc" viewBox="0 0 600 170" width="100%" role="img" aria-label="Grafik penjualan 30 hari"></svg></section>
+
+<section id="t-pan" hidden><h2>Petunjuk penggunaan</h2><ol>
+<li>Buka tautan halaman ini di browser. Tidak perlu instalasi.</li>
+<li>Lihat tab <b>Ringkasan</b> untuk ringkasan jumlah produk kritis, perlu restock, dan aman.</li>
+<li>Tab <b>Ranking SAW</b> menampilkan ranking prioritas restock. Bobot kriteria bisa diubah, dan kriteria kelima memakai hasil prediksi C4.5.</li>
+<li>Tab <b>Pohon C4.5</b> menampilkan pohon keputusan, akurasi, matriks konfusi, dan form untuk memprediksi risiko barang kosong.</li>
+<li>Tab <b>Data Barang</b> dipakai untuk mengubah stok dan penjualan, hasilnya langsung dihitung ulang.</li>
+<li>Status ditentukan dari hari cover stok: 2 hari atau kurang Kritis, sampai 5 hari Perlu restock, selebihnya Aman.</li></ol></section>
+</main>
+<script>
+const $=s=>document.querySelector(s),$$=s=>[...document.querySelectorAll(s)];
+const P=[["Beras 5 kg","Sembako",42,30,14,3,8],["Minyak goreng 2 L","Sembako",18,40,16,4,7],["Gula pasir 1 kg","Sembako",55,35,12,3,9],["Telur 1 kg","Sembako",20,25,15,2,10],["Tepung terigu 1 kg","Sembako",48,20,7,4,11],["Mi instan goreng","Makanan",120,100,60,2,12],["Mi instan kuah","Makanan",40,90,55,2,12],["Biskuit kaleng","Makanan",25,15,4,5,18],["Sarden kaleng","Makanan",30,20,6,5,14],["Kecap manis 275 ml","Bumbu",35,25,8,4,13],["Saus sambal","Bumbu",28,20,7,4,13],["Garam 250 g","Bumbu",60,30,6,3,15],["Susu UHT 1 L","Minuman",22,40,18,3,15],["Teh celup","Minuman",50,30,9,4,16],["Kopi sachet","Minuman",90,60,25,3,17],["Air mineral 600 ml","Minuman",72,120,48,2,20],["Sirup","Minuman",14,15,3,6,19],["Sabun mandi","Kebersihan",45,30,10,5,14],["Sampo sachet","Kebersihan",150,80,22,4,18],["Deterjen 800 g","Kebersihan",24,25,8,5,12],["Pasta gigi","Kebersihan",38,30,9,5,15],["Tisu gulung","Kebersihan",16,25,7,6,14],["Popok bayi","Bayi",12,15,5,7,11],["Susu formula","Bayi",10,12,3,7,9],["Snack kentang","Snack",80,50,16,3,20],["Cokelat batang","Snack",60,30,5,5,22],["Permen","Snack",200,100,14,2,25],["Roti tawar","Roti",6,20,13,1,18],["Nugget","Beku",12,18,6,3,17],["Minyak kayu putih","Kesehatan",30,12,2,6,25]].map(([n,k,s,m,j,l,g])=>({n,k,s,m,j,l,g}));const K=[0,3,0,2,0,1,3,0,0,0,1,0,2,0,1,2,0,0,0,1,0,1,2,1,0,0,0,4,1,0];P.forEach((p,i)=>p.x=K[i]);
+const W=[35,20,15,10,20],CN=['Hari cover (cost)','Penjualan/hari (benefit)','Lead time (benefit)','Margin % (benefit)','Risiko kosong C4.5 (benefit)'];
+const cov=p=>p.j>0?p.s/p.j:99,vals=p=>[cov(p),p.j,p.l,p.g,pred(T,feat(p))==='Rawan kosong'?1:0];
+const status=p=>{const c=cov(p);return c<=2?'Kritis':c<=5?'Perlu restock':'Aman'};
+const cl=s=>s.split(' ')[0];
+function saw(){T=build(P.map(feat),Object.keys(A),'Aman');const tw=W.reduce((a,b)=>a+b,0)||1,cols=[0,1,2,3,4].map(j=>P.map(p=>vals(p)[j]));
+ const mn=Math.min(...cols[0].filter(q=>q>0));
+ return P.map(p=>{const r=vals(p).map((x,j)=>j?x/(Math.max(...cols[j])||1):(x>0?mn/x:1));return{p,r,V:r.reduce((a,x,j)=>a+x*W[j]/tw,0)}}).sort((a,b)=>b.V-a.V)}
+const L=['Rawan kosong','Aman'];
+const A={'Level stok':['Rendah','Sedang','Tinggi'],Penjualan:['Rendah','Sedang','Tinggi'],'Lead time':['Singkat','Lama']};
+const feat=p=>({'Level stok':p.s<p.m?'Rendah':p.s<=1.5*p.m?'Sedang':'Tinggi',Penjualan:p.j>=15?'Tinggi':p.j>=7?'Sedang':'Rendah','Lead time':p.l<=3?'Singkat':'Lama',K:p.x>0?'Rawan kosong':'Aman'});
+const ent=r=>r.length?L.reduce((a,c)=>{const q=r.filter(x=>x.K===c).length/r.length;return q?a-q*Math.log2(q):a},0):0;
+const maj=r=>L.reduce((b,c)=>r.filter(x=>x.K===c).length>r.filter(x=>x.K===b).length?c:b,L[0]);
+function gr(r,a){let g=ent(r),si=0;for(const v of A[a]){const s=r.filter(x=>x[a]===v);if(!s.length)continue;const q=s.length/r.length;g-=q*ent(s);si-=q*Math.log2(q)}return si?g/si:0}
+function build(r,at,par){if(!r.length)return{leaf:par,n:0};if(!ent(r)||!at.length)return{leaf:maj(r),n:r.length};const b=at.reduce((x,y)=>gr(r,y)>gr(r,x)?y:x);const ch={};for(const v of A[b])ch[v]=build(r.filter(x=>x[b]===v),at.filter(x=>x!==b),maj(r));return{a:b,ch}}
+const show=n=>n.leaf?`<b class="${cl(n.leaf)}">${n.leaf}</b> <span class="mut">(${n.n} produk)</span>`:`<span>${n.a}</span><ul>${Object.entries(n.ch).map(([v,c])=>`<li><i>${v}:</i> ${show(c)}</li>`).join('')}</ul>`;
+let T;
+function drawAll(skip){
+ const R=saw(),rank=new Map(R.map((o,i)=>[o.p,i+1])),F=P.map(feat),cnt=k=>P.filter(p=>status(p)===k).length;
+ $('#stats').innerHTML=[['Total produk',P.length,''],['Kritis',cnt('Kritis'),'Kritis'],['Perlu restock',cnt('Perlu restock'),'Perlu'],['Aman',cnt('Aman'),'Aman'],['Prediksi rawan kosong',P.filter(p=>vals(p)[4]).length,'Rawan']].map(([a,b,c])=>`<div class="stat"><span class="mut">${a}</span><b class="${c}">${b}</b></div>`).join('');
+ $('#watch').innerHTML='<tr><th>Produk</th><th>Stok</th><th>Penjualan/hari</th><th>Stok minimum</th><th>Status</th></tr>'+R.filter(o=>status(o.p)!=='Aman').slice(0,10).map(o=>`<tr><td>${o.p.n}</td><td>${o.p.s}</td><td>${o.p.j}</td><td>${o.p.m}</td><td class="st ${cl(status(o.p))}">${status(o.p)}</td></tr>`).join('');
+ $('#rk').innerHTML='<tr><th>No</th><th>Produk</th><th>Hari cover</th><th>Nilai V</th><th>Status</th><th>Risiko C4.5</th><th>Saran pesan</th></tr>'+R.map((o,i)=>`<tr><td>${i+1}</td><td>${o.p.n}</td><td>${cov(o.p).toFixed(1)}</td><td><span class="bar"><i style="width:${o.V/R[0].V*100}%"></i></span>${o.V.toFixed(3)}</td><td class="st ${cl(status(o.p))}">${status(o.p)}</td><td>${vals(o.p)[4]?'Rawan':'Aman'}</td><td>${Math.max(0,Math.ceil(o.p.j*7+o.p.m-o.p.s))}</td></tr>`).join('');
+ $('#nm').innerHTML='<tr><th>Produk</th>'+CN.map(c=>`<th>${c.split(' (')[0]}</th>`).join('')+'</tr>'+R.map(o=>`<tr><td>${o.p.n}</td>${o.r.map(x=>`<td>${x.toFixed(3)}</td>`).join('')}</tr>`).join('');
+ T=build(F,Object.keys(A),'Aman');$('#tree').innerHTML=show(T);drawEval(F);
+ $('#gt').innerHTML='<tr><th>Atribut</th><th>Gain Ratio</th></tr>'+Object.keys(A).map(a=>[a,gr(F,a)]).sort((x,y)=>y[1]-x[1]).map(([a,g])=>`<tr><td>${a}</td><td>${g.toFixed(4)}</td></tr>`).join('');
+ if(!skip)drawData();if(0)$('#dt').innerHTML='<tr><th>No</th><th>Produk</th><th>Kategori</th><th>Stok</th><th>Penjualan/hari</th><th>Stok min</th><th>Lead time</th><th>Margin %</th></tr>'+P.map((p,i)=>`<tr><td>${i+1}</td><td>${p.n}</td><td>${p.k}</td><td><input type="number" min="0" value="${p.s}" data-i="${i}" data-f="s"></td><td><input type="number" min="0" value="${p.j}" data-i="${i}" data-f="j"></td><td>${p.m}</td><td>${p.l}</td><td>${p.g}</td></tr>`).join('');
+ hist()}
+$('#wt').innerHTML='<tr><th>Kriteria</th>'+CN.map(c=>`<th>${c}</th>`).join('')+'</tr><tr><td>Bobot (%)</td>'+W.map((w,j)=>`<td><input type="number" min="0" value="${w}" data-w="${j}"></td>`).join('')+'</tr>';
+document.addEventListener('input',e=>{const t=e.target;
+ if(t.dataset.w!==undefined)W[t.dataset.w]=+t.value||0;
+ else if(t.dataset.i!==undefined)P[t.dataset.i][t.dataset.f]=+t.value||0;
+ else return;save();drawAll(true)});
+$('#form').innerHTML=Object.keys(A).map(a=>`<label>${a}<select id="f${a.replace(' ','')}">${A[a].map(v=>`<option>${v}</option>`).join('')}</select></label>`).join('');
+$('#go').onclick=()=>{let n=T;const path=[];while(!n.leaf){const v=$('#f'+n.a.replace(' ','')).value;path.push(`${n.a} ${v}`);n=n.ch[v]}
+ $('#out').innerHTML=`<div class="res"><b>Prediksi: <span class="${cl(n.leaf)}">${n.leaf}</span></b><p class="mut">Aturan: ${path.join(', ')||'semua data satu kelas'}.</p></div>`};
+function fillHp(){const v=+$('#hp').value||0;$('#hp').innerHTML=P.map((p,i)=>`<option value="${i}">${p.n}</option>`).join('');$('#hp').value=Math.min(v,P.length-1)}
+const M={lokasi:'',tanggal:'',pengamat:'',catatan:''},KEY='pemantauan-stok-v1';
+function save(){try{localStorage.setItem(KEY,JSON.stringify({P,M}))}catch(e){}}
+try{const d=JSON.parse(localStorage.getItem(KEY)||'null');if(d&&Array.isArray(d.P)&&d.P.length){P.length=0;d.P.forEach(x=>P.push(x));Object.assign(M,d.M||{})}}catch(e){}
+function pred(n,f){while(!n.leaf)n=n.ch[f[n.a]];return n.leaf}
+function evalM(F){let tp=0,fp=0,fn=0,tn=0,cv=0;const rows=[];F.forEach((f,i)=>{const a=f.K,p=pred(T,f);rows.push([P[i].n,a,p]);if(a==='Rawan kosong'){p===a?tp++:fn++}else{p===a?tn++:fp++}const m=build(F.filter((_,j)=>j!==i),Object.keys(A),'Aman');if(pred(m,f)===a)cv++});return{tp,fp,fn,tn,cv,rows}}
+function drawEval(F){const n=F.length,e=evalM(F);$('#ev').innerHTML=`<p>Akurasi data latih: <b>${((e.tp+e.tn)/n*100).toFixed(1)}%</b>. Akurasi validasi leave-one-out: <b>${(e.cv/n*100).toFixed(1)}%</b>.</p><div class="wrap"><table><tr><th>Aktual / Prediksi</th><th>Rawan kosong</th><th>Aman</th></tr><tr><td>Rawan kosong</td><td>${e.tp}</td><td>${e.fn}</td></tr><tr><td>Aman</td><td>${e.fp}</td><td>${e.tn}</td></tr></table></div><details><summary>Aktual dan prediksi per barang</summary><div class="wrap"><table><tr><th>Barang</th><th>Aktual</th><th>Prediksi</th><th>Hasil</th></tr>${e.rows.map(r=>`<tr><td>${r[0]}</td><td>${r[1]}</td><td>${r[2]}</td><td>${r[1]===r[2]?'Benar':'Salah'}</td></tr>`).join('')}</table></div></details>`}
+function drawData(){$('#dt').innerHTML='<tr><th>No</th><th>Produk</th><th>Kategori</th><th>Stok</th><th>Jual/hari</th><th>Stok min</th><th>Lead time</th><th>Margin %</th><th>Kosong 30 hr</th><th></th></tr>'+P.map((p,i)=>`<tr><td>${i+1}</td><td>${p.n}</td><td>${p.k}</td>`+['s','j','m','l','g','x'].map(f=>`<td><input type="number" min="0" value="${p[f]}" data-i="${i}" data-f="${f}"></td>`).join('')+`<td><button class="btn" data-del="${i}" style="padding:4px 10px">Hapus</button></td></tr>`).join('')}
+function updateMeta(){const m=M;$('#meta').textContent=(m.lokasi||m.tanggal||m.pengamat)?`Sumber data: pengamatan di ${m.lokasi||'(lokasi belum diisi)'} pada ${m.tanggal||'(tanggal belum diisi)'} oleh ${m.pengamat||'(pengamat belum diisi)'}.${m.catatan?' Catatan: '+m.catatan:''}`:'Lembar pemantauan belum diisi. Isi di tab Data Barang.'}
+[['mL','lokasi'],['mT','tanggal'],['mP','pengamat'],['mC','catatan']].forEach(([id,k])=>{$('#'+id).value=M[k]||'';$('#'+id).oninput=()=>{M[k]=$('#'+id).value;save();updateMeta()}});updateMeta();
+$('#addb').onclick=()=>{const g=id=>+$('#'+id).value||0,n=$('#fN').value.trim();if(!n)return;P.push({n,k:$('#fK').value,s:g('fS'),m:g('fM'),j:g('fJ'),l:g('fL'),g:g('fG'),x:g('fX')});['fN','fS','fM','fJ','fL','fG','fX'].forEach(i=>$('#'+i).value='');save();fillHp();drawAll()};
+document.addEventListener('click',e=>{const d=e.target.dataset&&e.target.dataset.del;if(d===undefined||d===null)return;if(P.length>5)P.splice(+d,1);save();fillHp();drawAll()});
+fillHp();$('#hp').onchange=hist;
+const rnd=s=>{const x=Math.sin(s*12.9898)*43758.5453;return x-Math.floor(x)};
+function hist(){const i=+$('#hp').value,p=P[i],d=[...Array(30)].map((_,k)=>Math.max(0,Math.round(p.j*(.6+.8*rnd(i*31+k+1))))),mx=Math.max(...d,1);
+ $('#hs').innerHTML=[['Rata-rata/hari',(d.reduce((a,b)=>a+b,0)/30).toFixed(1)],['Tertinggi',mx],['Terendah',Math.min(...d)]].map(([a,b])=>`<div class="stat"><span class="mut">${a}</span><b>${b}</b></div>`).join('');
+ $('#hc').innerHTML=d.map((v,k)=>`<rect x="${14+k*19}" y="${150-v/mx*130}" width="14" height="${v/mx*130}" fill="var(--acc)" rx="2"><title>Hari ${k+1}: ${v}</title></rect>`).join('')+'<line x1="8" y1="150" x2="592" y2="150" stroke="var(--line)"/><text x="14" y="165">Hari 1</text><text x="555" y="165">Hari 30</text>'}
+const tabs=[['dash','Ringkasan'],['saw','Ranking SAW'],['c45','Pohon C4.5'],['data','Data Barang'],['hist','Tren Penjualan'],['pan','Petunjuk']];
+$('#nav').innerHTML=tabs.map(([k,n],i)=>`<button role="tab" aria-selected="${!i}" data-t="${k}">${n}</button>`).join('');
+$$('#nav button').forEach(b=>b.onclick=()=>{$$('#nav button').forEach(x=>x.setAttribute('aria-selected',x===b));tabs.forEach(([k])=>$('#t-'+k).hidden=k!==b.dataset.t)});
+drawAll();
+</script></body></html>
