@@ -60,7 +60,7 @@ ol{padding-left:20px;max-width:64ch}[hidden]{display:none!important}
 <details><summary>Gain Ratio pada akar pohon</summary><div class="wrap"><table id="gt"></table></div></details>
 <h3>Coba prediksi</h3><div class="form" id="form"></div><button class="btn" id="go">Prediksi status</button><div id="out"></div></section>
 
-<section id="t-data" hidden><h2>Data barang</h2><h3>Lembar pemantauan</h3><p class="mut">Isi hasil pengamatan di mitra. Data tersimpan di browser ini.</p><div class="form"><label>Lokasi / cabang<input id="mL"></label><label>Tanggal pengamatan<input type="date" id="mT"></label><label>Pengamat<input id="mP"></label><label>Catatan<input id="mC"></label></div><h3>Data barang hasil pengamatan</h3><p class="mut">Ubah angka langsung di tabel. Kolom Kosong 30 hr adalah berapa kali barang habis dalam 30 hari terakhir, dan menjadi dasar kelas C4.5.</p><div class="wrap"><table id="dt"></table></div><h3>Tambah barang</h3><div class="form"><label>Nama barang<input id="fN"></label><label>Kategori<select id="fK"><option>Sembako</option><option>Makanan</option><option>Minuman</option><option>Bumbu</option><option>Kebersihan</option><option>Bayi</option><option>Snack</option><option>Roti</option><option>Beku</option><option>Kesehatan</option></select></label><label>Stok<input type="number" min="0" id="fS"></label><label>Stok minimum<input type="number" min="0" id="fM"></label><label>Jual/hari<input type="number" min="0" id="fJ"></label><label>Lead time<input type="number" min="0" id="fL"></label><label>Margin %<input type="number" min="0" id="fG"></label><label>Kosong 30 hr<input type="number" min="0" id="fX"></label></div><button class="btn" id="addb">Tambah barang</button></section>
+<section id="t-data" hidden><h2>Data barang</h2><h3>Lembar pemantauan</h3><p class="mut">Isi hasil pengamatan di mitra. <span id="sync">Data tersimpan di browser ini.</span></p><div class="form"><label>Lokasi / cabang<input id="mL"></label><label>Tanggal pengamatan<input type="date" id="mT"></label><label>Pengamat<input id="mP"></label><label>Catatan<input id="mC"></label></div><h3>Data barang hasil pengamatan</h3><p class="mut">Ubah angka langsung di tabel. Kolom Kosong 30 hr adalah berapa kali barang habis dalam 30 hari terakhir, dan menjadi dasar kelas C4.5.</p><div class="wrap"><table id="dt"></table></div><h3>Tambah barang</h3><div class="form"><label>Nama barang<input id="fN"></label><label>Kategori<select id="fK"><option>Sembako</option><option>Makanan</option><option>Minuman</option><option>Bumbu</option><option>Kebersihan</option><option>Bayi</option><option>Snack</option><option>Roti</option><option>Beku</option><option>Kesehatan</option></select></label><label>Stok<input type="number" min="0" id="fS"></label><label>Stok minimum<input type="number" min="0" id="fM"></label><label>Jual/hari<input type="number" min="0" id="fJ"></label><label>Lead time<input type="number" min="0" id="fL"></label><label>Margin %<input type="number" min="0" id="fG"></label><label>Kosong 30 hr<input type="number" min="0" id="fX"></label></div><button class="btn" id="addb">Tambah barang</button></section>
 
 <section id="t-hist" hidden><h2>Tren penjualan 30 hari</h2><p class="mut">Penjualan harian simulasi untuk satu produk.</p><select id="hp" aria-label="Pilih produk"></select><div id="hs" class="stats"></div><svg id="hc" viewBox="0 0 600 170" width="100%" role="img" aria-label="Grafik penjualan 30 hari"></svg></section>
 
@@ -101,7 +101,7 @@ function drawAll(skip){
  $('#gt').innerHTML='<tr><th>Atribut</th><th>Gain Ratio</th></tr>'+Object.keys(A).map(a=>[a,gr(F,a)]).sort((x,y)=>y[1]-x[1]).map(([a,g])=>`<tr><td>${a}</td><td>${g.toFixed(4)}</td></tr>`).join('');
  if(!skip)drawData();if(0)$('#dt').innerHTML='<tr><th>No</th><th>Produk</th><th>Kategori</th><th>Stok</th><th>Penjualan/hari</th><th>Stok min</th><th>Lead time</th><th>Margin %</th></tr>'+P.map((p,i)=>`<tr><td>${i+1}</td><td>${p.n}</td><td>${p.k}</td><td><input type="number" min="0" value="${p.s}" data-i="${i}" data-f="s"></td><td><input type="number" min="0" value="${p.j}" data-i="${i}" data-f="j"></td><td>${p.m}</td><td>${p.l}</td><td>${p.g}</td></tr>`).join('');
  hist()}
-$('#wt').innerHTML='<tr><th>Kriteria</th>'+CN.map(c=>`<th>${c}</th>`).join('')+'</tr><tr><td>Bobot (%)</td>'+W.map((w,j)=>`<td><input type="number" min="0" value="${w}" data-w="${j}"></td>`).join('')+'</tr>';
+const drawW=()=>{$('#wt').innerHTML='<tr><th>Kriteria</th>'+CN.map(c=>`<th>${c}</th>`).join('')+'</tr><tr><td>Bobot (%)</td>'+W.map((w,j)=>`<td><input type="number" min="0" value="${w}" data-w="${j}"></td>`).join('')+'</tr>'};drawW();
 document.addEventListener('input',e=>{const t=e.target;
  if(t.dataset.w!==undefined)W[t.dataset.w]=+t.value||0;
  else if(t.dataset.i!==undefined)P[t.dataset.i][t.dataset.f]=+t.value||0;
@@ -111,7 +111,7 @@ $('#go').onclick=()=>{let n=T;const path=[];while(!n.leaf){const v=$('#f'+n.a.re
  $('#out').innerHTML=`<div class="res"><b>Prediksi: <span class="${cl(n.leaf)}">${n.leaf}</span></b><p class="mut">Aturan: ${path.join(', ')||'semua data satu kelas'}.</p></div>`};
 function fillHp(){const v=+$('#hp').value||0;$('#hp').innerHTML=P.map((p,i)=>`<option value="${i}">${p.n}</option>`).join('');$('#hp').value=Math.min(v,P.length-1)}
 const M={lokasi:'Alfamart (cabang contoh)',tanggal:'2026-11-23',pengamat:'Kelompok 4 (5 TI 6)',catatan:'Data dummy yang disusun mendekati kondisi nyata di Alfamart'},KEY='pemantauan-stok-v1';
-function save(){try{localStorage.setItem(KEY,JSON.stringify({P,M}))}catch(e){}}
+function save(){try{localStorage.setItem(KEY,JSON.stringify({P,M}))}catch(e){}push()}
 try{const d=JSON.parse(localStorage.getItem(KEY)||'null');if(d&&Array.isArray(d.P)&&d.P.length){P.length=0;d.P.forEach(x=>P.push(x));Object.entries(d.M||{}).forEach(([k,v])=>{if(v)M[k]=v})}}catch(e){}
 function pred(n,f){while(!n.leaf)n=n.ch[f[n.a]];return n.leaf}
 function evalM(F){let tp=0,fp=0,fn=0,tn=0,cv=0;const rows=[];F.forEach((f,i)=>{const a=f.K,p=pred(T,f);rows.push([P[i].n,a,p]);if(a==='Rawan kosong'){p===a?tp++:fn++}else{p===a?tn++:fp++}const m=build(F.filter((_,j)=>j!==i),Object.keys(A),'Aman');if(pred(m,f)===a)cv++});return{tp,fp,fn,tn,cv,rows}}
@@ -130,4 +130,32 @@ const tabs=[['dash','Ringkasan'],['saw','Ranking SAW'],['c45','Pohon C4.5'],['da
 $('#nav').innerHTML=tabs.map(([k,n],i)=>`<button role="tab" aria-selected="${!i}" data-t="${k}">${n}</button>`).join('');
 $$('#nav button').forEach(b=>b.onclick=()=>{$$('#nav button').forEach(x=>x.setAttribute('aria-selected',x===b));tabs.forEach(([k])=>$('#t-'+k).hidden=k!==b.dataset.t)});
 drawAll();
+/* ===== SINKRONISASI OTOMATIS (Firebase Realtime Database) =====
+   Tempel alamat database di bawah ini, contoh:
+   https://nama-project-default-rtdb.asia-southeast1.firebasedatabase.app
+   Kosongkan ('') bila tidak ingin memakai sinkronisasi (data hanya di browser). */
+const DB='https://pemantauan-stok-default-rtdb.asia-southeast1.firebasedatabase.app';
+let lastSync='',pushT=null;
+const canon=o=>JSON.stringify(o,(k,v)=>v&&typeof v==='object'&&!Array.isArray(v)?Object.fromEntries(Object.entries(v).sort()):v);
+const snap=()=>({P:P.map(p=>({...p})),W:[...W],M:{...M}});
+const setSt=t=>{const e=$('#sync');if(e)e.textContent=t};
+function push(){if(!DB)return;clearTimeout(pushT);setSt('Menyimpan...');
+ pushT=setTimeout(async()=>{pushT=null;const d=snap();try{const r=await fetch(DB+'/stok.json',{method:'PUT',body:JSON.stringify(d)});if(!r.ok)throw 0;lastSync=canon(d);setSt('Tersinkron otomatis ke semua perangkat.')}catch(e){setSt('Gagal menyimpan online, data tetap tersimpan di perangkat ini.')}},500)}
+function applyRemote(d){
+ P.length=0;d.P.forEach(x=>P.push({...x}));
+ if(Array.isArray(d.W)&&d.W.length===5)d.W.forEach((w,i)=>W[i]=+w||0);
+ Object.assign(M,d.M||{});
+ [['mL','lokasi'],['mT','tanggal'],['mP','pengamat'],['mC','catatan']].forEach(([id,k])=>{$('#'+id).value=M[k]||''});
+ try{localStorage.setItem(KEY,JSON.stringify({P,M}))}catch(e){}
+ drawW();fillHp();updateMeta();drawAll()}
+async function pull(){
+ if(!DB||pushT)return;
+ try{const r=await fetch(DB+'/stok.json?t='+Date.now(),{cache:'no-store'});if(!r.ok)throw 0;const d=await r.json();
+  if(d&&Array.isArray(d.P)&&d.P.length){
+   const remote=canon({P:d.P,W:d.W,M:d.M}),local=canon(snap());
+   if(remote!==lastSync&&remote!==local){const a=document.activeElement;if(a&&(a.tagName==='INPUT'||a.tagName==='SELECT'))return;applyRemote(d)}
+   lastSync=remote;setSt('Tersinkron otomatis ke semua perangkat.')
+  }else{push()}
+ }catch(e){setSt('Tidak bisa terhubung ke database online, memakai data di perangkat ini.')}}
+if(DB){setSt('Menghubungkan ke database online...');pull();setInterval(pull,5000)}
 </script></body></html>
