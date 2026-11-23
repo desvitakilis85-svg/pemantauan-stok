@@ -39,13 +39,164 @@ td input{width:4.8rem}
 details{margin:12px 0}summary{cursor:pointer;font-weight:600}
 svg text{fill:var(--mut);font-size:10px}
 ol{padding-left:20px;max-width:64ch}[hidden]{display:none!important}
-</style></head><body><main>
-<header class="hero"><span class="chip">SAW</span><span class="chip">C4.5</span><span class="chip">Sistem Pendukung Keputusan</span><span class="chip">Studi kasus: Alfamart</span><h1>PEMANTAUAN STOK BARANG</h1>
+
+/* ===== LOGIN, MENU, DAN FITUR TAMBAHAN ===== */
+html{scroll-padding-top:calc(72px + env(safe-area-inset-top,0px));scroll-behavior:smooth}
+body:not(.authed) main,body:not(.authed) #topbar,body:not(.authed) #drawer,body:not(.authed) #scrim,body:not(.authed) #foot{display:none}
+body.authed #login{display:none}
+.ic{width:20px;height:20px;fill:none;stroke:currentColor;stroke-width:2;stroke-linecap:round;stroke-linejoin:round;flex:none}
+.logo{width:44px;height:44px;flex:none;display:block}.logo.sm{width:32px;height:32px}
+:root[data-theme=dark] .ic-moon,:root:not([data-theme=dark]) .ic-sun{display:none}
+.themebtn{display:grid;place-items:center;width:42px;height:42px;border-radius:12px;cursor:pointer;border:1px solid var(--line);background:var(--surf);color:var(--acc);padding:0;flex:none}
+.themebtn.float{position:absolute;top:16px;right:16px}
+/* login */
+#login{min-height:100vh;display:flex;align-items:center;justify-content:center;padding:24px 18px;box-sizing:border-box;position:relative}
+.lcard{width:100%;max-width:420px;display:grid;grid-template-columns:1fr;background:var(--surf);border:1px solid var(--line);border-radius:24px;overflow:hidden;box-shadow:0 20px 50px rgba(180,0,27,.25);animation:rise .5s ease both}
+.lcard.shake{animation:shake .35s}
+.lside{color:#fff;background:linear-gradient(135deg,#8E0016 0%,#C8102E 50%,#FF5A5F 100%);padding:26px 24px;position:relative;overflow:hidden}
+.lside::after{content:"";position:absolute;right:-70px;bottom:-80px;width:240px;height:240px;border-radius:50%;background:radial-gradient(circle,rgba(255,255,255,.3),rgba(255,255,255,0) 70%)}
+.lside>*{position:relative;z-index:1}
+.lside .logo{margin-bottom:14px}
+.lside h1{font-size:1.55rem;letter-spacing:-.02em}
+.lside p{margin:8px 0 0;font-size:.92rem;opacity:.94;max-width:none}
+.lfeat{display:none;list-style:none;margin:22px 0 0;padding:0;gap:12px}
+.lfeat li{display:flex;gap:10px;align-items:flex-start;font-size:.92rem}
+.lfeat .ic{width:18px;height:18px;margin-top:3px;stroke-width:2.6}
+.lill{display:none;margin:22px 0 0}
+.lill svg{width:100%;max-width:340px;height:auto;display:block}
+.lill .dot{animation:blink 2.4s ease-in-out infinite}.lill .dot.d2{animation-delay:.6s}.lill .dot.d3{animation-delay:1.2s}
+@keyframes blink{50%{opacity:.35}}
+@media(min-width:760px){.lill{display:block}}
+@media(min-height:0) and (max-height:620px){.lill{display:none!important}}
+.lbody{padding:24px 24px 28px;display:grid;gap:14px;align-content:center}
+.lt{font:800 1.6rem Fraunces,Georgia,serif;letter-spacing:-.02em;color:var(--ink)}
+.lbody label{display:grid;gap:5px;font-weight:600;font-size:.9rem}
+.lbody input{width:100%;box-sizing:border-box}
+.lbody .btn{width:100%;margin-top:4px}
+.pw{position:relative}.pw input{padding-right:46px}
+.eye{position:absolute;right:4px;top:50%;transform:translateY(-50%);width:38px;height:38px;border:0;background:transparent;color:var(--mut);cursor:pointer;border-radius:8px;display:grid;place-items:center;padding:0}
+.pw .ic-eyeoff{display:none}.pw.show .ic-eye{display:none}.pw.show .ic-eyeoff{display:block}
+#lerr{color:var(--bad);font-size:.88rem;font-weight:600;min-height:1.2em;margin:0}
+@media(min-width:760px){.lcard{max-width:880px;grid-template-columns:1.1fr 1fr}.lside{padding:40px 36px}.lside h1{font-size:2rem}.lfeat{display:grid}.lbody{padding:40px 36px}}
+@keyframes rise{from{opacity:0;transform:translateY(14px)}to{opacity:1;transform:none}}
+@keyframes shake{20%,60%{transform:translateX(-7px)}40%,80%{transform:translateX(7px)}}
+/* bar atas */
+#topbar{position:sticky;top:env(safe-area-inset-top,0px);z-index:20;display:flex;align-items:center;gap:10px;padding:8px 12px;background:linear-gradient(120deg,#8E0016,#C8102E 60%,#E4343E);color:#fff;box-shadow:0 6px 18px rgba(180,0,27,.28)}
+#ttl{font:600 1.1rem Fraunces,Georgia,serif;flex:1;min-width:0;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+#burger{display:grid;gap:5px;align-content:center;justify-items:center;width:42px;height:42px;border:0;border-radius:12px;background:rgba(255,255,255,.16);cursor:pointer;padding:0;flex:none}
+#burger span{display:block;width:22px;height:3px;border-radius:2px;background:#fff}
+#burger:focus-visible,#pbtn:focus-visible,#topbar .themebtn:focus-visible{outline-color:#fff}
+#topbar .themebtn{background:rgba(255,255,255,.16);border:0;color:#fff}
+#pbtn{display:flex;align-items:center;gap:8px;height:42px;padding:0 10px 0 4px;border:0;border-radius:999px;background:rgba(255,255,255,.16);color:#fff;cursor:pointer;font:600 .9rem "Public Sans",sans-serif;flex:none}
+#pbtn .nm{display:none}
+@media(min-width:520px){#pbtn .nm{display:inline}}
+.av{width:34px;height:34px;border-radius:50%;display:grid;place-items:center;background:#fff;color:#C8102E;font:800 1rem Fraunces,Georgia,serif;flex:none}
+#pmenu{position:absolute;top:calc(100% + 8px);right:12px;width:min(260px,calc(100vw - 24px));background:var(--surf);color:var(--ink);border:1px solid var(--line);border-radius:16px;box-shadow:0 16px 40px rgba(0,0,0,.28);padding:14px;display:grid;gap:6px}
+#pmenu .who{display:flex;gap:12px;align-items:center;padding-bottom:10px;margin-bottom:4px;border-bottom:1px solid var(--line)}
+#pmenu .who .av{width:44px;height:44px;background:linear-gradient(135deg,#B3001B,#FF4D55);color:#fff;font-size:1.2rem}
+#pmenu .who b{display:block;font-family:Fraunces,Georgia,serif}
+#pmenu .who span{font-size:.82rem;color:var(--mut)}
+.mi{display:flex;align-items:center;gap:10px;width:100%;text-align:left;font:600 .93rem "Public Sans",sans-serif;background:transparent;color:var(--ink);border:0;border-radius:10px;padding:10px;cursor:pointer}
+.mi:hover{background:color-mix(in srgb,var(--acc) 10%,transparent)}.mi.danger{color:var(--bad)}
+/* menu samping */
+#drawer{position:fixed;top:0;left:0;bottom:0;width:min(290px,84vw);z-index:40;background:var(--surf);border-right:1px solid var(--line);box-shadow:8px 0 30px rgba(0,0,0,.25);transform:translateX(-105%);visibility:hidden;transition:transform .25s ease,visibility 0s .25s;display:flex;flex-direction:column;padding:calc(18px + env(safe-area-inset-top,0px)) 14px calc(18px + env(safe-area-inset-bottom,0px));box-sizing:border-box;overflow-y:auto}
+#drawer.open{transform:none;visibility:visible;transition:transform .25s ease}
+.dhead{display:flex;align-items:center;gap:12px;margin:0 6px 18px;padding-bottom:14px;border-bottom:1px solid var(--line)}
+.dhead b{display:block;font:800 1.05rem Fraunces,Georgia,serif;color:var(--acc);line-height:1.15}.dhead span{font-size:.78rem;color:var(--mut)}
+#drawer nav{flex-direction:column;overflow:visible;margin:0;padding:0;gap:6px}
+#drawer nav button{display:flex;align-items:center;gap:12px;width:100%;text-align:left;border-radius:12px;padding:12px 16px}
+.dfoot{margin:auto 6px 0;padding-top:14px;font-size:.78rem;color:var(--mut);border-top:1px solid var(--line)}
+#scrim{position:fixed;inset:0;z-index:30;background:rgba(0,0,0,.45);opacity:0;pointer-events:none;transition:opacity .25s}
+#scrim.show{opacity:1;pointer-events:auto}
+/* hero, banner, grafik */
+.greet{font:600 .95rem "Public Sans",sans-serif;opacity:.95;margin-bottom:12px}
+.banner{display:flex;align-items:center;gap:14px;flex-wrap:wrap;border-radius:16px;padding:14px 16px;margin:14px 0 0;border:1px solid;border-left-width:6px}
+.banner>.ic{width:28px;height:28px}
+.banner .bt{flex:1;min-width:200px;color:var(--ink)}.banner .bt b{display:block}.banner .bt span{font-size:.88rem;color:var(--mut)}
+.banner.danger{color:var(--bad);background:color-mix(in srgb,var(--bad) 10%,var(--surf))}
+.banner.warn{color:var(--warn);background:color-mix(in srgb,var(--warn) 10%,var(--surf))}
+.banner.ok{color:var(--ok);background:color-mix(in srgb,var(--ok) 10%,var(--surf))}
+.bbtn{font:600 .88rem "Public Sans",sans-serif;background:var(--acc);color:var(--onacc);border:0;border-radius:999px;padding:8px 16px;cursor:pointer}
+.charts{display:grid;grid-template-columns:repeat(auto-fit,minmax(270px,1fr));gap:14px;margin:16px 0}
+.card{background:var(--surf);border:1px solid var(--line);border-radius:16px;padding:8px 18px 18px;box-shadow:0 6px 16px rgba(180,0,27,.08)}
+.card h3{margin:10px 0 12px;font-size:1rem}
+.donut{display:flex;align-items:center;gap:18px;flex-wrap:wrap}
+.donut svg{width:150px;height:150px;flex:none}
+.donut .seg{fill:none;stroke-width:16;transition:stroke-dasharray .9s ease}
+.donut .trk{fill:none;stroke:var(--line);stroke-width:16}
+.donut .tot{font:800 26px Fraunces,Georgia,serif;fill:var(--ink)}.donut .sub{font-size:9px;fill:var(--mut)}
+.leg{display:grid;gap:8px;font-size:.9rem;flex:1;min-width:140px}.leg div{display:flex;align-items:center;gap:8px}.leg i{width:12px;height:12px;border-radius:4px;flex:none}.leg b{margin-left:auto;padding-left:10px}
+.hb{display:grid;grid-template-columns:minmax(80px,32%) 1fr auto;gap:10px;align-items:center;margin:10px 0;font-size:.88rem}
+.hb .n{white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.hb .tr{height:12px;background:var(--line);border-radius:6px;overflow:hidden}
+.hb .tr i{display:block;height:100%;border-radius:6px;transition:width .8s ease}
+.hb em{font-style:normal;font-weight:600;font-variant-numeric:tabular-nums}
+.c-k{background:var(--bad)}.c-p{background:var(--warn)}.c-a{background:var(--ok)}
+/* alat tabel */
+.tools{display:flex;flex-wrap:wrap;gap:8px;align-items:center;margin:10px 0 8px}
+.tools .srch{position:relative;flex:1;min-width:180px}
+.tools .srch input{width:100%;box-sizing:border-box;padding-left:36px}
+.tools .srch .ic{position:absolute;left:10px;top:50%;transform:translateY(-50%);color:var(--mut);width:18px;height:18px;pointer-events:none}
+.tbtn{display:inline-flex;align-items:center;gap:6px;font:600 .88rem "Public Sans",sans-serif;background:var(--pb);color:var(--pm);border:1px solid var(--pl);border-radius:999px;padding:8px 14px;cursor:pointer}
+.tbtn .ic{width:16px;height:16px}
+.tbtn:hover{background:color-mix(in srgb,var(--acc) 10%,var(--pb))}
+.empty{color:var(--mut);padding:10px 4px;margin:0}
+th.sortable{cursor:pointer;user-select:none}
+th.sortable::after{content:"\2195";opacity:.55;margin-left:6px;font-size:.8em}
+th[data-sort=asc]::after{content:"\25B2";opacity:1}
+th[data-sort=desc]::after{content:"\25BC";opacity:1}
+/* footer */
+#foot{max-width:960px;margin:0 auto;padding:6px 18px 34px;text-align:center;color:var(--mut);font-size:.85rem}
+#foot .fl{display:flex;align-items:center;justify-content:center;gap:10px;margin-bottom:8px;border-top:1px solid var(--line);padding-top:20px;color:var(--ink);font:800 1rem Fraunces,Georgia,serif}
+#foot p{margin:2px auto;max-width:none}
+.tools.lite .srch,.tools.lite select{display:none}
+.resetbox{margin-top:28px;padding-top:6px;border-top:1px solid var(--line)}
+.rbar{display:flex;flex-wrap:wrap;gap:8px;align-items:center}
+/* transisi halaman */
+main>section:not([hidden]),.hero{animation:rise .4s ease both}
+@media(prefers-reduced-motion:reduce){*,*::before,*::after{animation:none!important;transition:none!important;scroll-behavior:auto!important}}
+/* cetak */
+.printhead{display:none}
+@media print{
+ body{background:#fff!important}
+ #topbar,#drawer,#scrim,#foot,.tools,.resetbox,.bbtn,#login{display:none!important}
+ .printhead{display:block;margin:0 0 10px;font-size:.9rem;color:#000}
+ main{padding:0}main section,.card,.hero{box-shadow:none!important;animation:none!important}
+ th,.hero,.stat:first-child,.bar i,.seg{-webkit-print-color-adjust:exact;print-color-adjust:exact}
+}
+</style></head><body><script>try{if(sessionStorage.getItem("auth")==="1")document.body.classList.add("authed")}catch(e){}try{var t=localStorage.getItem("theme");if(t!=="dark"&&t!=="light")t=matchMedia("(prefers-color-scheme: dark)").matches?"dark":"light";document.documentElement.setAttribute("data-theme",t)}catch(e){}</script>
+<svg width="0" height="0" style="position:absolute" aria-hidden="true" focusable="false"><defs><linearGradient id="lg" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#B3001B"/><stop offset="1" stop-color="#FF4D55"/></linearGradient></defs>
+<symbol id="logo" viewBox="0 0 48 48"><rect width="48" height="48" rx="12" fill="#fff"/><path d="M24 9.5l12.5 6.8v15.4L24 38.5l-12.5-6.8V16.3z" fill="#C8102E"/><path d="M11.5 16.3L24 23l12.5-6.7M24 23v15.5" stroke="#fff" stroke-width="2.4" fill="none" stroke-linejoin="round" stroke-linecap="round"/></symbol>
+<symbol id="logo2" viewBox="0 0 48 48"><rect width="48" height="48" rx="12" fill="url(#lg)"/><path d="M24 9.5l12.5 6.8v15.4L24 38.5l-12.5-6.8V16.3z" fill="#fff"/><path d="M11.5 16.3L24 23l12.5-6.7M24 23v15.5" stroke="#C8102E" stroke-width="2.4" fill="none" stroke-linejoin="round" stroke-linecap="round"/></symbol></svg>
+<div id="login"><button class="themebtn float" type="button" aria-label="Ganti tema terang/gelap"><svg class="ic ic-sun" viewBox="0 0 24 24"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.9 4.9l1.4 1.4M17.7 17.7l1.4 1.4M2 12h2M20 12h2M4.9 19.1l1.4-1.4M17.7 6.3l1.4-1.4"/></svg><svg class="ic ic-moon" viewBox="0 0 24 24"><path d="M21 12.8A9 9 0 1 1 11.2 3a7 7 0 0 0 9.8 9.8z"/></svg></button><div class="lcard"><div class="lside"><svg class="logo" aria-hidden="true"><use href="#logo"/></svg><h1>PEMANTAUAN STOK BARANG</h1><p>Sistem pendukung keputusan pengadaan barang minimarket.</p>
+<ul class="lfeat"><li><svg class="ic" viewBox="0 0 24 24"><path d="M5 13l4 4L19 7"/></svg>Ranking prioritas restock dengan metode SAW</li><li><svg class="ic" viewBox="0 0 24 24"><path d="M5 13l4 4L19 7"/></svg>Prediksi risiko barang kosong dengan pohon keputusan C4.5</li><li><svg class="ic" viewBox="0 0 24 24"><path d="M5 13l4 4L19 7"/></svg>Data tersinkron otomatis ke semua perangkat</li></ul><div class="lill" aria-hidden="true"><svg viewBox="0 0 340 190" fill="none" xmlns="http://www.w3.org/2000/svg">
+<rect x="14" y="14" width="312" height="150" rx="14" fill="#fff" fill-opacity=".10" stroke="#fff" stroke-opacity=".35"/>
+<rect x="26" y="26" width="288" height="10" rx="5" fill="#fff" fill-opacity=".28"/>
+<g stroke="#fff" stroke-opacity=".75" stroke-width="3" stroke-linecap="round"><path d="M26 82H314"/><path d="M26 124H314"/><path d="M26 164H314"/></g>
+<g fill="#fff"><rect x="40" y="52" width="26" height="30" rx="3" fill-opacity=".92"/><rect x="70" y="60" width="26" height="22" rx="3" fill-opacity=".8"/><rect x="100" y="48" width="18" height="34" rx="9" fill-opacity=".92"/>
+<rect x="124" y="56" width="18" height="26" rx="9" fill-opacity=".8"/><rect x="148" y="62" width="26" height="20" rx="3" fill-opacity=".92"/>
+<rect x="40" y="94" width="26" height="30" rx="3" fill-opacity=".92"/><rect x="70" y="102" width="26" height="22" rx="3" fill-opacity=".8"/>
+<rect x="196" y="98" width="18" height="26" rx="9" fill-opacity=".92"/>
+<rect x="40" y="136" width="26" height="28" rx="3" fill-opacity=".92"/><rect x="70" y="144" width="26" height="20" rx="3" fill-opacity=".8"/><rect x="100" y="132" width="18" height="32" rx="9" fill-opacity=".92"/>
+<rect x="124" y="140" width="18" height="24" rx="9" fill-opacity=".8"/><rect x="148" y="146" width="26" height="18" rx="3" fill-opacity=".92"/><rect x="180" y="138" width="26" height="26" rx="3" fill-opacity=".8"/><rect x="212" y="134" width="18" height="30" rx="9" fill-opacity=".92"/></g>
+<g stroke="#fff" stroke-opacity=".55" stroke-width="2" stroke-dasharray="4 4"><rect x="102" y="102" width="26" height="22" rx="3"/><rect x="134" y="102" width="26" height="22" rx="3"/><rect x="166" y="102" width="26" height="22" rx="3"/><rect x="204" y="56" width="26" height="26" rx="3"/><rect x="236" y="56" width="26" height="26" rx="3"/><rect x="268" y="56" width="26" height="26" rx="3"/></g>
+<g stroke="#fff" stroke-opacity=".5" stroke-width="2" stroke-dasharray="4 4"><rect x="226" y="98" width="26" height="26" rx="3"/><rect x="258" y="98" width="26" height="26" rx="3"/><rect x="236" y="138" width="26" height="26" rx="3"/><rect x="268" y="138" width="26" height="26" rx="3"/></g>
+<g stroke="#fff" stroke-width="2.4"><circle class="dot" cx="296" cy="112" r="8" fill="#FF3B3B"/><circle class="dot d2" cx="298" cy="152" r="8" fill="#FFC145" /><circle class="dot d3" cx="298" cy="70" r="8" fill="#38D39F"/></g>
+<g fill="#fff"><rect x="26" y="176" width="6" height="6" rx="3" fill="#FF3B3B"/><text x="38" y="182" font-size="9" font-family="Public Sans,sans-serif" fill-opacity=".9">Kritis</text><rect x="80" y="176" width="6" height="6" rx="3" fill="#FFC145"/><text x="92" y="182" font-size="9" font-family="Public Sans,sans-serif" fill-opacity=".9">Perlu restock</text><rect x="168" y="176" width="6" height="6" rx="3" fill="#38D39F"/><text x="180" y="182" font-size="9" font-family="Public Sans,sans-serif" fill-opacity=".9">Aman</text></g>
+</svg></div></div>
+<form class="lbody" id="lf" autocomplete="off"><div class="lt">Masuk</div><label>Username<input id="lu" required autocapitalize="none"></label><label>Password<div class="pw"><input id="lp" type="password" required><button class="eye" id="eye" type="button" aria-label="Tampilkan password"><svg class="ic ic-eye" viewBox="0 0 24 24"><path d="M2 12s3.5-7 10-7 10 7 10 7-3.5 7-10 7S2 12 2 12z"/><circle cx="12" cy="12" r="3"/></svg><svg class="ic ic-eyeoff" viewBox="0 0 24 24"><path d="M3 3l18 18M10.6 5.1A9.7 9.7 0 0 1 12 5c6.5 0 10 7 10 7a17 17 0 0 1-3.2 4.1M6.6 6.6A17 17 0 0 0 2 12s3.5 7 10 7a9.6 9.6 0 0 0 4.4-1.1M9.9 9.9a3 3 0 0 0 4.2 4.2"/></svg></button></div></label><p id="lerr" role="alert"></p><button class="btn" id="lbtn" type="submit">Masuk</button></form></div></div>
+<header id="topbar"><button id="burger" aria-label="Buka menu" aria-expanded="false" aria-controls="drawer"><span></span><span></span><span></span></button><svg class="logo sm" aria-hidden="true"><use href="#logo"/></svg><b id="ttl">Ringkasan</b><button class="themebtn" type="button" aria-label="Ganti tema terang/gelap"><svg class="ic ic-sun" viewBox="0 0 24 24"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.9 4.9l1.4 1.4M17.7 17.7l1.4 1.4M2 12h2M20 12h2M4.9 19.1l1.4-1.4M17.7 6.3l1.4-1.4"/></svg><svg class="ic ic-moon" viewBox="0 0 24 24"><path d="M21 12.8A9 9 0 1 1 11.2 3a7 7 0 0 0 9.8 9.8z"/></svg></button>
+<button id="pbtn" type="button" aria-haspopup="true" aria-expanded="false" aria-controls="pmenu"><span class="av" id="av1">A</span><span class="nm" id="nm1">Admin</span><svg class="ic" viewBox="0 0 24 24" style="width:16px;height:16px"><path d="M6 9l6 6 6-6"/></svg></button>
+<div id="pmenu" hidden><div class="who"><span class="av" id="av2">A</span><div><b id="nm2">Admin</b><span>Administrator</span></div></div>
+<button class="mi" type="button" id="printbtn"><svg class="ic" viewBox="0 0 24 24"><path d="M6 9V3h12v6M6 18H4a1 1 0 0 1-1-1v-6a1 1 0 0 1 1-1h16a1 1 0 0 1 1 1v6a1 1 0 0 1-1 1h-2"/><rect x="6" y="14" width="12" height="7"/></svg>Cetak halaman ini</button>
+<button class="mi danger" type="button" id="logout"><svg class="ic" viewBox="0 0 24 24"><path d="M9 21H5a1 1 0 0 1-1-1V4a1 1 0 0 1 1-1h4M16 17l5-5-5-5M21 12H9"/></svg>Keluar</button></div></header>
+<div id="scrim"></div>
+<aside id="drawer" aria-label="Menu"><div class="dhead"><svg class="logo" aria-hidden="true"><use href="#logo2"/></svg><div><b>Pemantauan Stok</b><span>Studi kasus Alfamart</span></div></div><nav role="tablist" id="nav"></nav><div class="dfoot">Kelompok 4 (5 TI 6)<br>Data dummy untuk simulasi</div></aside>
+<main>
+<div class="printhead" id="printhead"></div><header class="hero"><div class="greet" id="greet"></div><span class="chip">SAW</span><span class="chip">C4.5</span><span class="chip">Sistem Pendukung Keputusan</span><span class="chip">Studi kasus: Alfamart</span><h1>PEMANTAUAN STOK BARANG</h1>
 <p>Aplikasi simulasi pengambilan keputusan pengadaan barang minimarket dengan SAW dan C4.5. Studi kasus mitra: Alfamart. Data yang ditampilkan adalah data dummy yang disusun mendekati kondisi nyata.</p></header>
 
-<nav role="tablist" id="nav"></nav>
-
-<section id="t-dash"><h2>Ringkasan persediaan</h2><p class="mut" id="meta"></p><div class="stats" id="stats"></div>
+<section id="t-dash"><h2>Ringkasan persediaan</h2><p class="mut" id="meta"></p><div id="banner"></div><div class="stats" id="stats"></div><div class="charts" id="charts"></div>
 <h3>Barang yang perlu segera dipesan</h3><p class="mut">Diurutkan berdasarkan prioritas SAW.</p><div class="wrap"><table id="watch"></table></div></section>
 
 <section id="t-saw" hidden><h2>Ranking prioritas SAW</h2>
@@ -72,6 +223,50 @@ ol{padding-left:20px;max-width:64ch}[hidden]{display:none!important}
 <li>Tab <b>Data Barang</b> dipakai untuk mengubah stok dan penjualan, hasilnya langsung dihitung ulang.</li>
 <li>Status ditentukan dari hari cover stok: 2 hari atau kurang Kritis, sampai 5 hari Perlu restock, selebihnya Aman.</li></ol></section>
 </main>
+<footer id="foot"><div class="fl"><svg class="logo sm" aria-hidden="true"><use href="#logo2"/></svg>PEMANTAUAN STOK BARANG</div><p>Sistem Pendukung Keputusan dengan metode SAW dan C4.5 &middot; Studi kasus Alfamart</p><p>Kelompok 4 (5 TI 6) &middot; Politeknik Negeri Manado &middot; Data dummy untuk simulasi &middot; &copy; 2026</p></footer>
+<script>
+/* ===== LOGIN, MENU, TEMA, PROFIL (skrip terpisah, tidak terpengaruh error skrip lain) ===== */
+(function(){
+var USERS={admin:'admin123'}; // ganti / tambah akun di sini
+var q=function(x){return document.querySelector(x)},qa=function(x){return Array.prototype.slice.call(document.querySelectorAll(x))};
+var root=document.documentElement;
+var dr=q('#drawer'),sc=q('#scrim'),bg=q('#burger'),pb=q('#pbtn'),pm=q('#pmenu');
+function user(){try{return sessionStorage.getItem('user')||'admin'}catch(e){return 'admin'}}
+function setUser(){var u=user();u=u.charAt(0).toUpperCase()+u.slice(1);
+ ['#nm1','#nm2'].forEach(function(i){q(i).textContent=u});['#av1','#av2'].forEach(function(i){q(i).textContent=u.charAt(0)});
+ var d=new Date(),h=d.getHours(),g=h<4?'malam':h<11?'pagi':h<15?'siang':h<18?'sore':'malam';
+ var ds=d.toLocaleDateString('id-ID',{weekday:'long',day:'numeric',month:'long',year:'numeric'});
+ q('#greet').textContent='Selamat '+g+', '+u+' \u00b7 '+ds;
+ q('#printhead').textContent='Laporan Pemantauan Stok Barang \u00b7 Alfamart \u00b7 '+ds+' \u00b7 oleh '+u}
+function menu(o){dr.classList.toggle('open',o);sc.classList.toggle('show',o);bg.setAttribute('aria-expanded',o);bg.setAttribute('aria-label',o?'Tutup menu':'Buka menu')}
+function pmenu(o){pm.hidden=!o;pb.setAttribute('aria-expanded',o)}
+function theme(t){root.setAttribute('data-theme',t);try{localStorage.setItem('theme',t)}catch(e){}}
+function intro(){setTimeout(function(){if(window.__intro)window.__intro()},40)}
+qa('.themebtn').forEach(function(b){b.addEventListener('click',function(){theme(root.getAttribute('data-theme')==='dark'?'light':'dark')})});
+bg.addEventListener('click',function(){pmenu(false);menu(!dr.classList.contains('open'))});
+sc.addEventListener('click',function(){menu(false)});
+pb.addEventListener('click',function(e){e.stopPropagation();menu(false);pmenu(pm.hidden)});
+document.addEventListener('click',function(e){if(!pm.hidden&&!pm.contains(e.target))pmenu(false)});
+document.addEventListener('keydown',function(e){if(e.key==='Escape'){menu(false);pmenu(false)}});
+q('#nav').addEventListener('click',function(e){var b=e.target.closest('button');if(!b)return;q('#ttl').textContent=b.textContent.trim();menu(false);window.scrollTo(0,0);if(b.getAttribute('data-t')==='dash')intro()});
+q('#eye').addEventListener('click',function(){var p=q('#lp'),s=p.type==='password';p.type=s?'text':'password';q('.pw').classList.toggle('show',s);this.setAttribute('aria-label',s?'Sembunyikan password':'Tampilkan password')});
+function login(e){if(e)e.preventDefault();
+ var u=q('#lu').value.trim(),p=q('#lp').value;
+ if(Object.prototype.hasOwnProperty.call(USERS,u)&&USERS[u]===p){try{sessionStorage.setItem('auth','1');sessionStorage.setItem('user',u)}catch(x){}
+  document.body.classList.add('authed');q('#lerr').textContent='';q('#lp').value='';setUser();window.scrollTo(0,0);intro()}
+ else{q('#lerr').textContent='Username atau password salah.';var c=q('.lcard');c.classList.remove('shake');void c.offsetWidth;c.classList.add('shake')}}
+q('#lf').addEventListener('submit',login);q('#lbtn').addEventListener('click',login);
+q('#logout').addEventListener('click',function(){try{sessionStorage.removeItem('auth');sessionStorage.removeItem('user')}catch(x){}
+ menu(false);pmenu(false);document.body.classList.remove('authed');q('#lu').value='';q('#lp').type='password';q('.pw').classList.remove('show')});
+window.safePrint=function(){var framed=false;try{framed=window.self!==window.top}catch(e){framed=true}
+ try{window.print()}catch(e){framed=true}
+ if(framed){var t=document.createElement('div');t.setAttribute('role','status');t.textContent='Kalau jendela cetak tidak muncul, buka halaman ini langsung di tab browser (bukan di pratinjau), lalu tekan Ctrl+P.';
+  t.style.cssText='position:fixed;left:50%;bottom:24px;transform:translateX(-50%);max-width:min(92vw,420px);z-index:100;padding:12px 16px;border-radius:12px;background:var(--surf);color:var(--ink);border:1px solid var(--line);box-shadow:0 8px 30px rgba(0,0,0,.3);font-size:.9rem;text-align:center';
+  document.body.appendChild(t);setTimeout(function(){t.remove()},6000)}};
+q('#printbtn').addEventListener('click',function(){pmenu(false);window.safePrint()});
+setUser();
+})();
+</script>
 <script>
 const $=s=>document.querySelector(s),$$=s=>[...document.querySelectorAll(s)];
 const P=[["Beras 5 kg","Sembako",42,30,14,3,8],["Minyak goreng 2 L","Sembako",18,40,16,4,7],["Gula pasir 1 kg","Sembako",55,35,12,3,9],["Telur 1 kg","Sembako",20,25,15,2,10],["Tepung terigu 1 kg","Sembako",48,20,7,4,11],["Mi instan goreng","Makanan",120,100,60,2,12],["Mi instan kuah","Makanan",40,90,55,2,12],["Biskuit kaleng","Makanan",25,15,4,5,18],["Sarden kaleng","Makanan",30,20,6,5,14],["Kecap manis 275 ml","Bumbu",35,25,8,4,13],["Saus sambal","Bumbu",28,20,7,4,13],["Garam 250 g","Bumbu",60,30,6,3,15],["Susu UHT 1 L","Minuman",22,40,18,3,15],["Teh celup","Minuman",50,30,9,4,16],["Kopi sachet","Minuman",90,60,25,3,17],["Air mineral 600 ml","Minuman",72,120,48,2,20],["Sirup","Minuman",14,15,3,6,19],["Sabun mandi","Kebersihan",45,30,10,5,14],["Sampo sachet","Kebersihan",150,80,22,4,18],["Deterjen 800 g","Kebersihan",24,25,8,5,12],["Pasta gigi","Kebersihan",38,30,9,5,15],["Tisu gulung","Kebersihan",16,25,7,6,14],["Popok bayi","Bayi",12,15,5,7,11],["Susu formula","Bayi",10,12,3,7,9],["Snack kentang","Snack",80,50,16,3,20],["Cokelat batang","Snack",60,30,5,5,22],["Permen","Snack",200,100,14,2,25],["Roti tawar","Roti",6,20,13,1,18],["Nugget","Beku",12,18,6,3,17],["Minyak kayu putih","Kesehatan",30,12,2,6,25]].map(([n,k,s,m,j,l,g])=>({n,k,s,m,j,l,g}));const K=[0,3,0,2,0,1,3,0,0,0,1,0,2,0,1,2,0,0,0,1,0,1,2,1,0,0,0,4,1,0];P.forEach((p,i)=>p.x=K[i]);
@@ -112,6 +307,7 @@ $('#go').onclick=()=>{let n=T;const path=[];while(!n.leaf){const v=$('#f'+n.a.re
 function fillHp(){const v=+$('#hp').value||0;$('#hp').innerHTML=P.map((p,i)=>`<option value="${i}">${p.n}</option>`).join('');$('#hp').value=Math.min(v,P.length-1)}
 const M={lokasi:'Alfamart (cabang contoh)',tanggal:'2026-11-23',pengamat:'Kelompok 4 (5 TI 6)',catatan:'Data dummy yang disusun mendekati kondisi nyata di Alfamart'},KEY='pemantauan-stok-v1';
 function save(){try{localStorage.setItem(KEY,JSON.stringify({P,M}))}catch(e){}push()}
+const P0=P.map(p=>({...p})),W0=[...W],M0={...M};
 try{const d=JSON.parse(localStorage.getItem(KEY)||'null');if(d&&Array.isArray(d.P)&&d.P.length){P.length=0;d.P.forEach(x=>P.push(x));Object.entries(d.M||{}).forEach(([k,v])=>{if(v)M[k]=v})}}catch(e){}
 function pred(n,f){while(!n.leaf)n=n.ch[f[n.a]];return n.leaf}
 function evalM(F){let tp=0,fp=0,fn=0,tn=0,cv=0;const rows=[];F.forEach((f,i)=>{const a=f.K,p=pred(T,f);rows.push([P[i].n,a,p]);if(a==='Rawan kosong'){p===a?tp++:fn++}else{p===a?tn++:fp++}const m=build(F.filter((_,j)=>j!==i),Object.keys(A),'Aman');if(pred(m,f)===a)cv++});return{tp,fp,fn,tn,cv,rows}}
@@ -158,4 +354,119 @@ async function pull(){
   }else{push()}
  }catch(e){setSt('Tidak bisa terhubung ke database online, memakai data di perangkat ini.')}}
 if(DB){setSt('Menghubungkan ke database online...');pull();setInterval(pull,5000)}
-</script></body></html>
+</script><script>
+/* ===== FITUR TAMBAHAN: grafik, banner, tabel interaktif, ekspor CSV ===== */
+(function(){
+var q=function(x){return document.querySelector(x)},qa=function(x){return Array.prototype.slice.call(document.querySelectorAll(x))};
+var reduce=window.matchMedia&&matchMedia('(prefers-reduced-motion: reduce)').matches;
+var SV='<svg class="ic" viewBox="0 0 24 24">';
+var ICO={search:SV+'<circle cx="11" cy="11" r="7"/><path d="M21 21l-4.3-4.3"/></svg>',dl:SV+'<path d="M12 3v12M7 10l5 5 5-5M4 21h16"/></svg>',pr:SV+'<path d="M6 9V3h12v6M6 18H4a1 1 0 0 1-1-1v-6a1 1 0 0 1 1-1h16a1 1 0 0 1 1 1v6a1 1 0 0 1-1 1h-2"/><rect x="6" y="14" width="12" height="7"/></svg>',
+ warn:SV+'<path d="M12 3l10 18H2z"/><path d="M12 10v5M12 18h.01"/></svg>',ok:SV+'<circle cx="12" cy="12" r="9"/><path d="M8 12l3 3 5-6"/></svg>'};
+var NAVIC={dash:SV+'<path d="M3 11l9-8 9 8v10a1 1 0 0 1-1 1h-5v-7H9v7H4a1 1 0 0 1-1-1z"/></svg>',saw:SV+'<path d="M5 21V11M12 21V3M19 21v-6"/></svg>',
+ c45:SV+'<circle cx="12" cy="5" r="2.5"/><circle cx="5.5" cy="19" r="2.5"/><circle cx="18.5" cy="19" r="2.5"/><path d="M12 7.5v4M12 11.5H5.5v5M12 11.5h6.5v5"/></svg>',
+ data:SV+'<path d="M21 8l-9-5-9 5v8l9 5 9-5z"/><path d="M3 8l9 5 9-5M12 13v8"/></svg>',hist:SV+'<path d="M3 17l6-6 4 4 8-9"/><path d="M15 6h6v6"/></svg>',
+ pan:SV+'<circle cx="12" cy="12" r="9"/><path d="M9.5 9.5a2.5 2.5 0 1 1 3.5 2.3c-.7.4-1 1-1 1.7M12 17h.01"/></svg>'};
+function esc(s){return String(s).replace(/[&<>"]/g,function(c){return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]})}
+
+/* ---- ikon menu samping ---- */
+qa('#nav button').forEach(function(b){var k=b.getAttribute('data-t'),t=b.textContent;b.innerHTML=(NAVIC[k]||'')+'<span>'+esc(t)+'</span>'});
+
+/* ---- banner + grafik ringkasan ---- */
+function dash(){
+ if(typeof P==='undefined')return;
+ var K=0,Pr=0,A=0;P.forEach(function(p){var s=status(p);if(s==='Kritis')K++;else if(s==='Perlu restock')Pr++;else A++});
+ var R=saw(),top=R.slice(0,5),mx=top.length?top[0].V:1,tot=P.length||1;
+ var crit=R.filter(function(o){return status(o.p)==='Kritis'}).slice(0,3).map(function(o){return o.p.n});
+ var cls,msg,sub;
+ if(K>0){cls='danger';msg=K+' barang kritis'+(Pr?' dan '+Pr+' perlu restock':'');sub='Segera lakukan pemesanan. Prioritas: '+crit.join(', ')+'.'}
+ else if(Pr>0){cls='warn';msg=Pr+' barang perlu restock';sub='Tidak ada barang kritis, tetapi stok mulai menipis.'}
+ else{cls='ok';msg='Semua stok dalam kondisi aman';sub='Tidak ada barang yang perlu dipesan saat ini.'}
+ q('#banner').innerHTML='<div class="banner '+cls+'" role="status">'+(cls==='ok'?ICO.ok:ICO.warn)+'<div class="bt"><b>'+esc(msg)+'</b><span>'+esc(sub)+'</span></div>'+((K||Pr)?'<button class="bbtn" type="button" id="bgo">Lihat daftar</button>':'')+'</div>';
+ var go=q('#bgo');if(go)go.onclick=function(){var w=q('#watch');if(w)w.parentNode.scrollIntoView({behavior:'smooth',block:'start'})};
+ var C=2*Math.PI*44,segs=[[K,'var(--bad)','Kritis'],[Pr,'var(--warn)','Perlu restock'],[A,'var(--ok)','Aman']],acc=0,arcs='',leg='';
+ segs.forEach(function(s){var len=C*s[0]/tot;arcs+='<circle class="seg" cx="60" cy="60" r="44" style="stroke:'+s[1]+'" stroke-dasharray="'+len+' '+(C-len)+'" stroke-dashoffset="'+(-acc)+'" data-len="'+len+'" data-c="'+C+'"><title>'+s[2]+': '+s[0]+'</title></circle>';acc+=len;
+  leg+='<div><i style="background:'+s[1]+'"></i>'+s[2]+'<b>'+s[0]+' ('+Math.round(s[0]/tot*100)+'%)</b></div>'});
+ var bars=top.map(function(o){var st=status(o.p),c=st==='Kritis'?'c-k':st==='Perlu restock'?'c-p':'c-a',w=(o.V/mx*100).toFixed(1);
+  return '<div class="hb"><span class="n" title="'+esc(o.p.n)+'">'+esc(o.p.n)+'</span><span class="tr"><i class="'+c+'" style="width:'+w+'%" data-w="'+w+'"></i></span><em>'+o.V.toFixed(3)+'</em></div>'}).join('');
+ q('#charts').innerHTML='<div class="card"><h3>Komposisi status stok</h3><div class="donut"><svg viewBox="0 0 120 120" role="img" aria-label="Kritis '+K+', perlu restock '+Pr+', aman '+A+'"><circle class="trk" cx="60" cy="60" r="44"/><g transform="rotate(-90 60 60)">'+arcs+'</g><text class="tot" x="60" y="62" text-anchor="middle">'+P.length+'</text><text class="sub" x="60" y="77" text-anchor="middle">produk</text></svg><div class="leg">'+leg+'</div></div></div>'
+  +'<div class="card"><h3>5 prioritas restock teratas</h3>'+bars+'<p class="mut" style="font-size:.8rem;margin:4px 0 0">Nilai V hasil perhitungan SAW. Makin tinggi makin mendesak.</p></div>';
+ qa('#stats .stat b').forEach(function(b){b.setAttribute('data-v',b.textContent)});
+}
+window.__intro=function(){
+ if(reduce)return;
+ qa('#stats .stat b').forEach(function(b){var t=+b.getAttribute('data-v');if(isNaN(t))return;var t0=null;b.textContent='0';
+  (function f(ts){if(t0===null)t0=ts;var k=Math.min(1,(ts-t0)/800);b.textContent=Math.round(t*(1-Math.pow(1-k,3)));if(k<1)requestAnimationFrame(f);else b.textContent=t})(performance.now())});
+ qa('#charts .tr i').forEach(function(i){var w=i.getAttribute('data-w');i.style.transition='none';i.style.width='0%';i.getBoundingClientRect();i.style.transition='';i.style.width=w+'%'});
+ qa('#charts .seg').forEach(function(c){var l=+c.getAttribute('data-len'),C=+c.getAttribute('data-c');c.style.transition='none';c.style.strokeDasharray='0 '+C;c.getBoundingClientRect();c.style.transition='';c.style.strokeDasharray=l+' '+(C-l)})
+};
+
+/* ---- tabel: cari, filter, urut, ekspor CSV, cetak ---- */
+var V={};
+function cellVal(td){if(!td)return '';var i=td.querySelector('input');return (i?i.value:td.textContent).trim()}
+function rowsOf(t){return Array.prototype.filter.call(t.rows,function(r){return r.cells.length&&r.cells[0].tagName==='TD'})}
+function colIdx(t,name){var h=t.rows[0];if(!h)return -1;for(var i=0;i<h.cells.length;i++)if(h.cells[i].textContent.trim()===name)return i;return -1}
+function rowStatus(t,r){var si=colIdx(t,'Status');if(si>=0)return cellVal(r.cells[si]);var inp=r.querySelector('input[data-i]');if(inp&&typeof P!=='undefined'){var p=P[+inp.getAttribute('data-i')];if(p)return status(p)}return ''}
+var RANK={'Kritis':0,'Perlu restock':1,'Aman':2};
+function applyView(t){var s=V[t.id];if(!s||!t.rows.length)return;
+ var rows=rowsOf(t),hd=t.rows[0];
+ rows.forEach(function(r,i){if(r.__o===undefined)r.__o=i});
+ Array.prototype.forEach.call(hd.cells,function(th,i){if(!th.textContent.trim())return;th.classList.add('sortable');th.setAttribute('tabindex','0');th.setAttribute('data-sort',s.col===i?(s.dir>0?'asc':'desc'):'')});
+ var isSt=s.col>=0&&hd.cells[s.col]&&hd.cells[s.col].textContent.trim()==='Status';
+ rows.sort(function(a,b){if(s.col<0)return a.__o-b.__o;var x=cellVal(a.cells[s.col]),y=cellVal(b.cells[s.col]),d;
+  if(isSt)d=(RANK[x]!==undefined?RANK[x]:9)-(RANK[y]!==undefined?RANK[y]:9);
+  else if(x!==''&&y!==''&&!isNaN(+x)&&!isNaN(+y))d=+x-+y;else d=x.localeCompare(y,'id');
+  return d?d*s.dir:a.__o-b.__o});
+ if(rows.length){var tb=rows[0].parentNode;rows.forEach(function(r){tb.appendChild(r)})}
+ var n=0;rows.forEach(function(r){var nm=(r.cells[1]?r.cells[1].textContent:'').toLowerCase();
+  var ok=(!s.q||nm.indexOf(s.q)>-1)&&(!s.st||rowStatus(t,r)===s.st);r.hidden=!ok;if(ok)n++});
+ s.empty.hidden=n>0||!rows.length}
+function qt(v){return '"'+String(v).replace(/"/g,'""')+'"'}
+function csv(t,name){var hd=t.rows[0],keep=[];Array.prototype.forEach.call(hd.cells,function(th,i){if(th.textContent.trim())keep.push(i)});
+ var lines=[keep.map(function(i){return qt(hd.cells[i].textContent.trim())}).join(';')];
+ rowsOf(t).filter(function(r){return !r.hidden}).forEach(function(r){lines.push(keep.map(function(i){return qt(cellVal(r.cells[i]))}).join(';'))});
+ var blob=new Blob(['\ufeffsep=;\r\n'+lines.join('\r\n')],{type:'text/csv;charset=utf-8'}),a=document.createElement('a');
+ a.href=URL.createObjectURL(blob);a.download=name+'-'+new Date().toISOString().slice(0,10)+'.csv';document.body.appendChild(a);a.click();
+ setTimeout(function(){URL.revokeObjectURL(a.href);a.remove()},500)}
+function tools(id,fname,lite){var t=q('#'+id);if(!t)return;var wrap=t.parentNode,bar=document.createElement('div');bar.className='tools'+(lite?' lite':'');
+ bar.innerHTML='<div class="srch">'+ICO.search+'<input type="search" placeholder="Cari nama barang..." aria-label="Cari nama barang"></div><select aria-label="Filter status"><option value="">Semua status</option><option>Kritis</option><option>Perlu restock</option><option>Aman</option></select><button class="tbtn" type="button" data-a="csv">'+ICO.dl+'Ekspor CSV</button><button class="tbtn" type="button" data-a="print">'+ICO.pr+'Cetak</button>';
+ wrap.parentNode.insertBefore(bar,wrap);
+ var em=document.createElement('p');em.className='empty';em.hidden=true;em.textContent=lite?'Tidak ada barang yang perlu dipesan saat ini.':'Tidak ada barang yang cocok dengan pencarian.';wrap.parentNode.insertBefore(em,wrap.nextSibling);
+ var s=V[id]={q:'',st:'',col:-1,dir:1,empty:em};
+ bar.querySelector('input').addEventListener('input',function(){s.q=this.value.trim().toLowerCase();applyView(t)});
+ bar.querySelector('select').addEventListener('change',function(){s.st=this.value;applyView(t)});
+ bar.addEventListener('click',function(e){var b=e.target.closest('button');if(!b)return;if(b.getAttribute('data-a')==='csv')csv(t,fname);else window.safePrint()});
+ t.addEventListener('click',function(e){var th=e.target.closest('th');if(!th||!th.classList.contains('sortable'))return;var i=th.cellIndex;
+  if(s.col!==i){s.col=i;s.dir=1}else if(s.dir===1)s.dir=-1;else{s.col=-1;s.dir=1}applyView(t)});
+ t.addEventListener('keydown',function(e){if(e.key==='Enter'&&e.target.tagName==='TH')e.target.click()});
+ new MutationObserver(function(){applyView(t)}).observe(t,{childList:true});
+ applyView(t)}
+tools('rk','ranking-saw');tools('dt','data-barang');tools('watch','barang-perlu-dipesan',true);
+
+/* ---- render ulang setiap data berubah ---- */
+var d0=window.drawAll;
+if(typeof d0==='function'){window.drawAll=function(){var r=d0.apply(this,arguments);try{dash()}catch(e){console.error(e)}return r}}
+try{dash()}catch(e){console.error(e)}
+if(document.body.classList.contains('authed'))setTimeout(window.__intro,300);
+
+/* ---- kembalikan data awal ---- */
+(function(){
+ var sec=q('#t-data');if(!sec||typeof P0==='undefined')return;
+ var box=document.createElement('div');box.className='resetbox';
+ box.innerHTML='<h3>Kembalikan data awal</h3><p class="mut">Menghapus semua perubahan (stok, bobot, barang tambahan, dan lembar pemantauan) lalu memulihkan data contoh awal. Kalau sinkronisasi online aktif, data di semua perangkat ikut kembali ke awal.</p>'
+  +'<div class="rbar"><button class="tbtn" type="button" id="rsb">Reset data</button><span id="rsc" hidden><span class="mut">Yakin?</span> <button class="btn" type="button" id="rsy" style="padding:8px 14px">Ya, reset</button> <button class="tbtn" type="button" id="rsn">Batal</button></span><span class="mut" id="rsm" role="status"></span></div>';
+ sec.appendChild(box);
+ var b=q('#rsb'),c=q('#rsc'),m=q('#rsm');
+ function ask(o){c.hidden=!o;b.hidden=o;m.textContent=''}
+ b.addEventListener('click',function(){ask(true)});
+ q('#rsn').addEventListener('click',function(){ask(false)});
+ q('#rsy').addEventListener('click',function(){
+  P.length=0;P0.forEach(function(x){P.push(Object.assign({},x))});
+  W0.forEach(function(w,i){W[i]=w});
+  Object.keys(M).forEach(function(k){delete M[k]});Object.assign(M,M0);
+  [['mL','lokasi'],['mT','tanggal'],['mP','pengamat'],['mC','catatan']].forEach(function(a){q('#'+a[0]).value=M[a[1]]||''});
+  save();drawW();fillHp();updateMeta();drawAll();try{hist()}catch(e){}
+  ask(false);m.textContent='Data sudah dikembalikan ke kondisi awal.';setTimeout(function(){m.textContent=''},5000)});
+})();
+})();
+</script>
+</body></html>
